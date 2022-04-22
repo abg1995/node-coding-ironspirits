@@ -1,5 +1,8 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const Product = require('./models/product.model');
 const app = express();
+
 
 app.set("views", __dirname + "/views");
 app.set("view engine", "hbs");
@@ -7,66 +10,55 @@ app.set("view engine", "hbs");
 app.use(express.static('public'));
 
 
-
+mongoose
+    .connect('mongodb://localhost/ironborn-ecommerce')
+    .then(x => console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`))
+    .catch(err => console.error('Error connecting to mongo', err));
 
 /* Routes */
 
 app.get("/", (req, res, next)=>{
-    res.sendFile(__dirname + '/views/home.html');
+    res.render("home");
 });
 
 
 app.get("/about", (req, res, next) => {
-    res.sendFile(__dirname + '/views/about.html');
+    res.render("about");
 });
 
 
 app.get("/contact", (req, res, next) => {
-    res.sendFile(__dirname + '/views/contact.html');
+    res.render("contact");
 });
 
+app.get("/products", (req, res, next) => {
+    res.render("products");
+});
 
 
 
 app.get("/limoncello", (req, res, next) => {
-
-    // res.render("view", info);
-
-    const data = {
-        title: "Limoncello",
-        price: 20,
-        imageFile: "limoncello.png",
-        stores: ["Online","Madrid", "Amsterdam","Paris"]
-
-    }
-
-    res.render("product", data);
+    Product.findOne({title:'Limoncello'})
+    .then((productDetails) => {
+        res.render("product",productDetails);
+    })
+    .catch( error => console.log(error))
 });
 
 app.get("/whiskey", (req, res, next) => {
-
-
-    const data ={
-        title: "whiskey",
-        price: 105,
-        imageFile: "suntory-yamazaki.jpeg",
-        stores: ["Online","Madrid", "Amsterdam","Paris"]
-    }
-
-    res.render("product",data);
+    Product.findOne({title:'Single Malt Whisky Yamakazi'})
+    .then((productDetails) => {
+        res.render("product",productDetails);
+    })
+    .catch( error => console.log(error))
 });
 
 app.get("/tequila", (req, res, next) => {
-
-    const data = {
-        title: "Tequila",
-        price: 35,
-        imageFile: "donjulio.jpeg",
-        stores: ["Online","Madrid", "Amsterdam","Paris"]
-    }
-
-        res.render("product", data);
-});
+    Product.findOne({title:'Tequila Don Julio'})
+    .then((productDetails) => {
+        res.render("product",productDetails);
+    })
+    .catch( error => console.log(error))});
 
 
 
