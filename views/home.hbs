@@ -1,3 +1,38 @@
 <h1>Home</h1>
 
 <p>Highest percentage of alcohol</p>
+
+<div id="search-form" class="form-container">
+  <p>Search products</p>
+  <form action="/products" method="GET">
+
+    <label>
+      <p>Maximun price</p>
+      <input type="number" min="1" name="maxPrice" />
+    </label>
+
+    <button>Submit</button>
+  </form>
+</div>
+
+<div id="create-form" class="form-container">
+
+  <p>Place a new product</p>
+
+  <form action="/new" method="POST">
+
+    <label>
+
+      Name
+      <input type="text" name="title" />
+    </label>
+    <label>
+      Price
+      <input type="number" name="price" />
+
+    </label>
+    <button type="submit">Submit</button>
+
+  </form>
+
+</div>
